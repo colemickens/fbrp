@@ -88,7 +88,7 @@ func promptFacebookLogin() http.Handler {
 
 func checkFacebookGroups(token *oauth2.Token) (bool, error) {
 	client := FACEBOOK_OAUTH_CONFIG.Client(oauth2.NoContext, token)
-	resp, err := client.Get("https://graph.facebook.com/me?fields=id,name,groups{id}")
+	resp, err := client.Get("https://graph.facebook.com/v2.3/me?fields=id,name,groups{id}")
 	if err != nil {
 		log.Println("failed to check groups")
 		log.Println(err)
