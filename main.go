@@ -56,7 +56,7 @@ func init() {
 		ClientID:     CONFIG.AppId,
 		ClientSecret: CONFIG.AppSecret,
 		RedirectURL:  "http://" + CONFIG.Hostname + FACEBOOK_AUTH_CALLBACK_ROUTE,
-		Scopes:       []string{"user_about_me,user_groups"},
+		Scopes:       []string{"user_about_me", "user_groups"},
 		Endpoint:     facebook.Endpoint,
 	}
 }
