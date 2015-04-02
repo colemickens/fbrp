@@ -1,6 +1,11 @@
 fbrp
 ====
 
+NOTE: Six hours after starting, I'm abandoning this as Facebook doesn't allow anyone to use the "user_groups" scope.
+I'll be forking it and trying to rig something similar up via Twitter Lists instead.
+
+---
+
 This is FBRP: "FaceBook Reverse Proxy".
 
 This started out with the idea of making a generic reverse proxy protected by Facebook auth.
