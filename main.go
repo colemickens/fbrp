@@ -19,7 +19,7 @@ type FbrpConfig struct {
 	AppId         string `json:"app_id"`
 	AppSecret     string `json:"app_secret"`
 	Hostname      string `json:"hostname"`
-	SecretGroupId int    `json:"secret_group_id"`
+	SecretGroupId string `json:"secret_group_id"`
 	ServeRoot     string `json:"serve_root"`
 	InternalPort  int    `json:"internal_port"`
 	SessionSecret string `json:"session_secret"`
@@ -56,7 +56,7 @@ func init() {
 		ClientID:     CONFIG.AppId,
 		ClientSecret: CONFIG.AppSecret,
 		RedirectURL:  "http://" + CONFIG.Hostname + FACEBOOK_AUTH_CALLBACK_ROUTE,
-		Scopes:       []string{"user_groups"},
+		Scopes:       []string{"user_about_me,user_groups"},
 		Endpoint:     facebook.Endpoint,
 	}
 }
@@ -88,7 +88,7 @@ func promptFacebookLogin() http.Handler {
 
 func checkFacebookGroups(token *oauth2.Token) (bool, error) {
 	client := FACEBOOK_OAUTH_CONFIG.Client(oauth2.NoContext, token)
-	resp, err := client.Get("https://graph.facebook.com/v2.0/me/groups")
+	resp, err := client.Get("https://graph.facebook.com/me?fields=id,name,groups{id}")
 	if err != nil {
 		log.Println("failed to check groups")
 		log.Println(err)
@@ -96,15 +96,18 @@ func checkFacebookGroups(token *oauth2.Token) (bool, error) {
 	}
 	defer resp.Body.Close()
 
-	var respData map[string][]map[string]interface{}
+	var respData map[string]interface{}
 
 	_ = json.NewDecoder(resp.Body).Decode(&respData)
 
-	listOfGroups := respData["data"]
+	name := respData["name"].(string)
+	listOfGroups := respData["groups"].(map[string]interface{})
+	listOfGroups2 := listOfGroups["data"].([]interface{})
 
-	for _, group := range listOfGroups {
-		groupId := group["id"].(string)
-		if groupId == strconv.Itoa(CONFIG.SecretGroupId) {
+	for _, group := range listOfGroups2 {
+		groupId := group.(map[string]interface{})["id"].(string)
+		if groupId == CONFIG.SecretGroupId {
+			log.Println("LOGIN: ", name)
 			return true, nil
 		}
 	}
