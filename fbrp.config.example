@@ -1,0 +1,10 @@
+{
+	"APP_ID": "REPLACE_THIS_APP_ID",
+	"APP_SECRET": "REPLACE_THIS_APP_SECRET",
+	"HOSTNAME": "files.mickens.io",
+	"secret_group_id": PUT_YOUR_SECRET_GROUP_ID_HERE,
+	"serve_root": "/media/data/Media",
+	"internal_port": 3333,
+	"session_secret": "THIS_IS_SUPER_SECRET"
+}
+

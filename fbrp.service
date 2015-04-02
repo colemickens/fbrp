@@ -1,0 +1,8 @@
+[Unit]
+Description=Facebook Reverse Proxy Service
+
+[Service]
+ExecStart=/home/cole/Code/colemickens/fbrp/fbrp -config /home/cole/Code/colemickens/fbrp/fbrp.config
+
+[Install]
+WantedBy=multi-user.target
